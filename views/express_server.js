@@ -36,16 +36,31 @@ app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
 
+app.get("/u/:id", (req, res) => {
+  const id = req.params.id;
+  const longURL = urlDatabase[id].longURL;
+  res.redirect(longURL);
+});
 
 app.get("/urls/:id", (req, res) => {
   const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id]}
   res.render("urls_show", templateVars);
-})
+});
+
 
 app.post("/urls", (req, res) => {
   console.log(req.body); // log the POST request body to the console
   res.send("ok");
 });
 
-function generateRandomString() {}
+function generateRandomString() {
+  const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+  let randomString = '';
+
+  for (let i = 0; i < 6; i++) {
+    const index = Math.floor(Math.random() * alphabet.length);
+    randomString += alphabet[index];
+  }
+  return randomString;
+}
 

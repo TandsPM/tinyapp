@@ -43,18 +43,14 @@ app.get("/u/:id", (req, res) => {
 });
 
 // // EDIT
-app.post("/urls/:id", (req, res) => {
+app.post("/urls/:id/edit", (req, res) => {
   const idToUpdate = req.params.id;
   console.log("idToUpdate", idToUpdate)
   const newLongURL = req.body.longURL;
 
-  if (urlDatabase[idToUpdate] !== undefined) {
-    urlDatabase[idToUpdate] = newLongURL;
-    res.redirect("/urls");
-  }
-  // urlDatabase[idToUpdate] = newLongURL;
-  // console.log("urlDatabase", urlDatabase)
-  // res.redirect("/urls");
+  urlDatabase[idToUpdate] = newLongURL;
+  console.log("urlDatabase", urlDatabase)
+  res.redirect("/urls");
 });
 
 // DELETE

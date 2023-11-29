@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Protected Sign-in</title>
+</head>
+<body>
+    <h1>Protected Sign-in</h1>
+    <p>
+      You are signed in as:
+    </p>
+    <dl>
+      <dt>User ID:</dt><dd><%= signedInUser.id %></dd>
+      <dt>Username:</dt><dd><%= signedInUser.username %></dd>
+    </dl>
+    <p>Are you done?</p>
+    <form method="POST" action="/sign-out">
+      <button type="submit">
+        Sign Out
+      </button>
+    </form>
+</body>
+</html>

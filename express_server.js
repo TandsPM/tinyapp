@@ -15,6 +15,19 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+const users = {
+  uniqueId1: {
+    id: 'uniqueId1',
+    username: 'tpm',
+    password: 'password1'
+  },
+  uniqueId2: {
+    id: 'uniqueId2',
+    username: 'Louman',
+    password: 'iamdoggo'
+  }
+};
+
 
 app.get("/", (rep, res) => {
   res.send("Hello!");
@@ -95,11 +108,43 @@ app.get('/delete-cookies', (req, res) => {
   res.redirect('/read-cookies');
 });
 
-// app.post("/login", (req, res) => {
-//   const username = req.body.username;
-//   res.cookie("username", username);
-//   res.redirect("/urls");
-// })
+
+// Protected page we need to sign in
+app.get('/protectedSignIn', (req, res) => {
+  const cookies = req.cookies;
+  const idOfUser = cookies.idOfUser;
+
+  const user = users[idOfUser];
+
+  if(user) {
+    const templateVars = {
+      signedInUser: user
+    };
+    res.render('protectedSignIn', templateVars);
+  } else {
+    res.status(401).end('<p>No Access</p>');
+  }
+});
+
+// sign-in form
+app.get('/sign-in', (req, res) => {
+  const cookies = req.cookies;
+  const idOfUser = cookies.idOfUser;
+
+  if(idOfUser) {
+    res.redirect('/protectedSignIn')
+  }
+
+  res.render('sign-in');
+});
+
+// POST sign-in - set cookie to show who we are - redirect to protected page
+
+ app.post("/login", (req, res) => {
+   const username = req.body.username;
+   res.cookie("username", username);
+   res.redirect("/urls");
+ })
 
 
 app.get("/urls/:id", (req, res) => {

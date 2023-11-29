@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Read Cookies</title>
+    </head>
+    <body>
+        <h1>Read Cookies</h1>
+        <ul>
+            <% for(const key in value) { %>
+              <li>
+                <%= value[key] %>
+              </li>
+            <% } //end of for %>
+        </ul>
+    </body>
+</html>

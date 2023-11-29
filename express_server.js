@@ -1,19 +1,25 @@
 const express = require("express");
+const cookieParser = require("cookie-parser");
+const morgan = require('morgan');
+
 const app = express();
 const PORT = 8080; // default 8080
-
 app.set("view engine", "ejs");
+
+app.use(express.urlencoded({ extended: true }));
+app.use(morgan('dev'));
+app.use(cookieParser())
 
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
 
-app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (rep, res) => {
   res.send("Hello!");
 });
+
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
@@ -61,6 +67,33 @@ app.post("/urls/:id/delete", (req, res) => {
   console.log("urlDatabase", urlDatabase);
   res.redirect("/urls");
 });
+
+// read/output cookie data
+app.get('/read-cookies', (req, res) => {
+  const cookies = req.cookies;
+  const templateVars = {
+    value: cookies
+  };
+
+  // console.log('cookies:', cookies);
+  res.render('read-cookies')
+});
+
+// set cookies
+app.get('/read-cookeis', (req, res) => {
+
+});
+
+// delete cookies
+app.get('/read-cookeis', (req, res) => {
+
+});
+
+// app.post("/login", (req, res) => {
+//   const username = req.body.username;
+//   res.cookie("username", username);
+//   res.redirect("/urls");
+// })
 
 
 app.get("/urls/:id", (req, res) => {

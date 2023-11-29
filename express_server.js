@@ -45,26 +45,26 @@ app.get("/u/:id", (req, res) => {
 // // EDIT
 app.post("/urls/:id/edit", (req, res) => {
   const idToUpdate = req.params.id;
-  console.log("idToUpdate", idToUpdate)
+  console.log("idToUpdate", idToUpdate);
   const newLongURL = req.body.longURL;
 
   urlDatabase[idToUpdate] = newLongURL;
-  console.log("urlDatabase", urlDatabase)
+  console.log("urlDatabase", urlDatabase);
   res.redirect("/urls");
 });
 
 // DELETE
 app.post("/urls/:id/delete", (req, res) => {
   const idToDelete = req.params.id;
-  console.log("idToDelete", idToDelete)
+  console.log("idToDelete", idToDelete);
   delete urlDatabase[idToDelete];
-  console.log("urlDatabase", urlDatabase)
+  console.log("urlDatabase", urlDatabase);
   res.redirect("/urls");
 });
 
 
 app.get("/urls/:id", (req, res) => {
-  const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id]}
+  const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id] };
   res.render("urls_show", templateVars);
 });
 

@@ -76,17 +76,23 @@ app.get('/read-cookies', (req, res) => {
   };
 
   // console.log('cookies:', cookies);
-  res.render('read-cookies')
+  res.render('read-cookies', templateVars);
 });
 
 // set cookies
-app.get('/read-cookeis', (req, res) => {
+app.get('/set-cookies', (req, res) => {
+  res.cookie('setCookie', '🍪🍪🍪');
 
+  res.redirect('/read-cookies');
 });
 
 // delete cookies
-app.get('/read-cookeis', (req, res) => {
+app.get('/delete-cookies', (req, res) => {
+  for(const key in req.cookies) {
+    res.clearCookie(key);
+  }
 
+  res.redirect('/read-cookies');
 });
 
 // app.post("/login", (req, res) => {

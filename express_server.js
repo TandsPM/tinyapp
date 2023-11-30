@@ -72,7 +72,7 @@ app.post("/urls/:id/edit", (req, res) => {
   res.redirect("/urls");
 });
 
-// DELETE
+// DELETE URL
 app.post("/urls/:id/delete", (req, res) => {
   const idToDelete = req.params.id;
   console.log("idToDelete", idToDelete);
@@ -81,102 +81,97 @@ app.post("/urls/:id/delete", (req, res) => {
   res.redirect("/urls");
 });
 
-// read/output cookie data
-app.get('/read-cookies', (req, res) => {
-  const cookies = req.cookies;
-  const templateVars = {
-    value: cookies
-  };
+// // read/output cookie data
+// app.get('/read-cookies', (req, res) => {
+//   const cookies = req.cookies;
+//   const templateVars = {
+//     value: cookies
+//   };
 
-  // console.log('cookies:', cookies);
-  res.render('read-cookies', templateVars);
-});
+//   // console.log('cookies:', cookies);
+//   res.render('read-cookies', templateVars);
+// });
 
-// set cookies
-app.get('/set-cookies', (req, res) => {
-  res.cookie('setCookie', '🍪🍪🍪');
+// // set cookies
+// app.get('/set-cookies', (req, res) => {
+//   res.cookie('setCookie', '🍪🍪🍪');
 
-  res.redirect('/read-cookies');
-});
+//   res.redirect('/read-cookies');
+// });
 
-// delete cookies
-app.get('/delete-cookies', (req, res) => {
-  for(const key in req.cookies) {
-    res.clearCookie(key);
-  }
+// // delete cookies
+// app.get('/delete-cookies', (req, res) => {
+//   for(const key in req.cookies) {
+//     res.clearCookie(key);
+//   }
 
-  res.redirect('/read-cookies');
-});
+//   res.redirect('/read-cookies');
+// });
 
 
 // Protected page we need to sign in
-app.get('/protectedSignIn', (req, res) => {
-  const cookies = req.cookies;
-  const idOfUser = cookies.idOfUser;
+// app.get('/protectedLogin', (req, res) => {
+//   const cookies = req.cookies;
+//   const idOfUser = cookies.idOfUser;
 
-  const user = users[idOfUser];
+//   const user = users[idOfUser];
 
-  if(user) {
-    const templateVars = {
-      signedInUser: user
-    };
-    res.render('protectedSignIn', templateVars);
-  } else {
-    res.status(401).end('<p>No Access</p>');
-  }
-});
+//   if(user) {
+//     const templateVars = {
+//       signedInUser: user
+//     };
+//     res.render('/protectedLogin', templateVars);
+//   } else {
+//     res.status(401).end('<p>No Access</p>');
+//   }
+// });
 
-// sign-in form
-app.get('/sign-in', (req, res) => {
-  const cookies = req.cookies;
-  const idOfUser = cookies.idOfUser;
+// // /login form
+// app.get('/login', (req, res) => {
+//   const cookies = req.cookies;
+//   const idOfUser = cookies.idOfUser;
 
-  if(idOfUser) {
-    res.redirect('/protectedSignIn')
-  }
+//   if(idOfUser) {
+//     res.redirect('/protectedLogin');
+//   }
 
-  res.render('sign-in');
-});
+//   res.render('login');
+// });
 
-// POST sign-in - set cookie to show who we are - redirect to protected page
-app.post('/sign-in', (req, res) => {
-  const body = req.body;
+// // POST /login - set cookie to show who we are - redirect to protected page
+// app.post('/login', (req, res) => {
+//   const body = req.body;
 
-  const username = body.username;
-  const password = body.password;
+//   const username = body.username;
+//   const password = body.password;
 
-  let user = null;
+//   let user = null;
 
-  for(const id in users) {
-    const dataUser = users[id];
+//   for(const id in users) {
+//     const dataUser = users[id];
 
-    if(username === dataUser.username) {
-      if(password === dataUser.password) {
-        user = dataUser;
-      }
-    }
-  }
+//     if(username === dataUser.username) {
+//       if(password === dataUser.password) {
+//         user = dataUser;
+//       }
+//     }
+//   }
 
-  if (user) {
-    res.cookie('userId', user.id);
-    res.redirect('/protectedSignIn');
-  } else {
-    res.status(401).end('Incorrect user or password');
-  }
+//   if (user) {
+//     res.cookie('idOfUser', user.id);
+//     res.redirect('/protectedLogin');
+//   } else {
+//     res.status(401).end('<p>Incorrect user or password</p>');
+//   }
+// });
 
-  // console.log(
-  //   'username:', username,
-  //   'password:', password
-  // );
-  res.end();
-})
+// // sign out
+// app.post('/logout', (req, res) => {
+//   res.clearCookies('idOfUser');
+//   res.redirect('/login');
+// });
 
 
- app.post("/login", (req, res) => {
-   const username = req.body.username;
-   res.cookie("username", username);
-   res.redirect("/urls");
- })
 
 
 app.get("/urls/:id", (req, res) => {

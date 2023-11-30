@@ -127,43 +127,43 @@ app.post("/urls/:id/delete", (req, res) => {
 // });
 
 // // /login form
-// app.get('/login', (req, res) => {
-//   const cookies = req.cookies;
-//   const idOfUser = cookies.idOfUser;
+app.get('/login', (req, res) => {
+  const cookies = req.cookies;
+  const idOfUser = cookies.idOfUser;
 
-//   if(idOfUser) {
-//     res.redirect('/protectedLogin');
-//   }
+  if(idOfUser) {
+    res.redirect('/protectedLogin');
+  }
 
-//   res.render('login');
-// });
+  res.render('login');
+});
 
 // // POST /login - set cookie to show who we are - redirect to protected page
-// app.post('/login', (req, res) => {
-//   const body = req.body;
+app.post('/login', (req, res) => {
+  const body = req.body;
 
-//   const username = body.username;
-//   const password = body.password;
+  const username = body.username;
+  const password = body.password;
 
-//   let user = null;
+  let user = null;
 
-//   for(const id in users) {
-//     const dataUser = users[id];
+  for(const id in users) {
+    const dataUser = users[id];
 
-//     if(username === dataUser.username) {
-//       if(password === dataUser.password) {
-//         user = dataUser;
-//       }
-//     }
-//   }
+    if(username === dataUser.username) {
+      if(password === dataUser.password) {
+        user = dataUser;
+      }
+    }
+  }
 
-//   if (user) {
-//     res.cookie('idOfUser', user.id);
-//     res.redirect('/protectedLogin');
-//   } else {
-//     res.status(401).end('<p>Incorrect user or password</p>');
-//   }
-// });
+  if (user) {
+    res.cookie('idOfUser', user.id);
+    res.redirect('/protectedLogin');
+  } else {
+    res.status(401).end('<p>Incorrect user or password</p>');
+  }
+});
 
 // // sign out
 // app.post('/logout', (req, res) => {

@@ -109,31 +109,14 @@ app.post("/urls/:id/delete", (req, res) => {
 // });
 
 
-// Protected page we need to sign in
-// app.get('/protectedLogin', (req, res) => {
-//   const cookies = req.cookies;
-//   const idOfUser = cookies.idOfUser;
-
-//   const user = users[idOfUser];
-
-//   if(user) {
-//     const templateVars = {
-//       signedInUser: user
-//     };
-//     res.render('/protectedLogin', templateVars);
-//   } else {
-//     res.status(401).end('<p>No Access</p>');
-//   }
-// });
-
 // // /login form
 app.get('/login', (req, res) => {
   const cookies = req.cookies;
   const idOfUser = cookies.idOfUser;
 
-  if(idOfUser) {
-    res.redirect('/protectedLogin');
-  }
+   if(idOfUser) {
+     res.redirect('/urls');
+   }
 
   res.render('login');
 });
@@ -159,7 +142,7 @@ app.post('/login', (req, res) => {
 
   if (user) {
     res.cookie('idOfUser', user.id);
-    res.redirect('/protectedLogin');
+    res.redirect('/urls');
   } else {
     res.status(401).end('<p>Incorrect user or password</p>');
   }

@@ -164,32 +164,29 @@ app.post('/logout', (req, res) => {
 
 // Register
 app.get('/register', (req, res) => {
+  const user_id = req.cookies['user_id'];
+  const user = users[user_id];
   const templateVars = {
-  email: req.cookies["email"] || '',
-  password: req.cookies["password"]
-  }
+    user
+  };
+
   res.render('register', templateVars)
 })
 
 app.post('/register', (req, res) => {
-  const userID = req.params.user;
-  console.log("userToUpdate", userID);
-  const newUserID = req.body.register;
+  const { email, password } = req.body;
+  const id = generateRandomString(6);
+  users[id] = {
+    id,
+    email,
+    password,
+  };
+  res.cookie('user_id', id);
 
-  users[userID] = newUserID;
-  console.log("users", users);
-  res.cookie('newUserID', newUserID);
-  res.redirect("/urls");
-})
+  console.log(users[id]);
+  res.redirect('/urls');
 
-// const idToUpdate = req.params.id;
-// console.log("idToUpdate", idToUpdate);
-// const newLongURL = req.body.longURL;
-
-// urlDatabase[idToUpdate] = newLongURL;
-// console.log("urlDatabase", urlDatabase);
-// res.redirect("/urls");
-
+});
 
 
 app.get("/urls/:id", (req, res) => {

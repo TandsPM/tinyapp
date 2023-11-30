@@ -24,6 +24,7 @@
             <th scope="col">Delete</th>
           </tr>
         </thead>
+        <% if (urls) { %>
         <tbody>
           <% for (let id in urls) { %>
             <tr>
@@ -42,6 +43,9 @@
             </tr>
             <% } %>
         </tbody>
+        <% } else { %>
+          <p>No URLs found</p>
+        <% } %>
       </table>
     </main>
     <!-- Bootstrap JS -->

@@ -18,12 +18,16 @@
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
       </div>
 
+    <% if (username) { %>
+      <p class="navbar-text">Welcome, <%= username %>!</p>
+    <% } else { %>
       <form method="POST" class="form-inline m1-auto" action="/login">
         <div class="form-group">
         <input type="text" class="form-control" name="username" placeholder="Username" required>
         </div>
         <button type="submit" class="btn btn-light">Login</button>
       </form>
+      <% } %>
     </div>
   </nav>
 </header>

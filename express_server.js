@@ -46,10 +46,19 @@ app.get("/hello", (req, res) => {
   res.send("<html><body>Hello <b>World</b></body></html>\n");
 });
 
+app.get('/urls', (req, res) => {
+  const templateVars = {
+    username: req.cookies["username"] || '',
+    urls: urlDatabase
+  };
+  res.render('urls_index', templateVars);
+});
+
 app.get("/urls", (req, res) => {
   const templateVars = { urls: urlDatabase };
   res.render("urls_index", templateVars);
 });
+
 
 app.get("/urls/new", (req, res) => {
   res.render("urls_new");
@@ -109,16 +118,23 @@ app.post("/urls/:id/delete", (req, res) => {
 // });
 
 
+// Protected page we need to sign in
+//  app.get('/urls', (req, res) => {
+//     const templateVars = {
+//       username: req.cookies["username"] || ''
+//     };
+//     res.render('urls_index', templateVars);
+// });
+
 // // /login form
 app.get('/login', (req, res) => {
-  const cookies = req.cookies;
-  const idOfUser = cookies.idOfUser;
+  const cookies = req.cookies.username;
 
-   if(idOfUser) {
+   if(username) {
      res.redirect('/urls');
+   } else {
+    res.render('login');
    }
-
-  res.render('login');
 });
 
 // // POST /login - set cookie to show who we are - redirect to protected page
@@ -141,10 +157,10 @@ app.post('/login', (req, res) => {
   }
 
   if (user) {
-    res.cookie('idOfUser', user.id);
+    res.cookie('username', username);
     res.redirect('/urls');
   } else {
-    res.status(401).end('<p>Incorrect user or password</p>');
+    res.status(401).send('<p>Incorrect user or password</p>');
   }
 });
 

@@ -118,14 +118,6 @@ app.post("/urls/:id/delete", (req, res) => {
 // });
 
 
-// Protected page we need to sign in
-//  app.get('/urls', (req, res) => {
-//     const templateVars = {
-//       username: req.cookies["username"] || ''
-//     };
-//     res.render('urls_index', templateVars);
-// });
-
 // // /login form
 app.get('/login', (req, res) => {
   const username = req.cookies.username;
@@ -170,6 +162,14 @@ app.post('/logout', (req, res) => {
   res.redirect('/login');
 });
 
+// Register
+app.get('/register', (req, res) => {
+  const templateVars = {
+  email: req.cookies["email"] || '',
+  password: req.cookies["password"]
+  }
+  res.render('register', templateVars)
+})
 
 
 

@@ -139,6 +139,38 @@ app.get('/sign-in', (req, res) => {
 });
 
 // POST sign-in - set cookie to show who we are - redirect to protected page
+app.post('/sign-in', (req, res) => {
+  const body = req.body;
+
+  const username = body.username;
+  const password = body.password;
+
+  let user = null;
+
+  for(const id in users) {
+    const dataUser = users[id];
+
+    if(username === dataUser.username) {
+      if(password === dataUser.password) {
+        user = dataUser;
+      }
+    }
+  }
+
+  if (user) {
+    res.cookie('userId', user.id);
+    res.redirect('/protectedSignIn');
+  } else {
+    res.status(401).end('Incorrect user or password');
+  }
+
+  // console.log(
+  //   'username:', username,
+  //   'password:', password
+  // );
+  res.end();
+})
+
 
  app.post("/login", (req, res) => {
    const username = req.body.username;

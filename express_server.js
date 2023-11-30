@@ -18,13 +18,13 @@ const urlDatabase = {
 const users = {
   uniqueId1: {
     id: 'uniqueId1',
-    username: 'tpm',
+    email: 'user@example.com',
     password: 'password1'
   },
   uniqueId2: {
     id: 'uniqueId2',
-    username: 'Louman',
-    password: 'iamdoggo'
+    email: 'user2@example.com',
+    password: 'password22'
   }
 };
 
@@ -170,6 +170,25 @@ app.get('/register', (req, res) => {
   }
   res.render('register', templateVars)
 })
+
+app.post('/register', (req, res) => {
+  const userID = req.params.user;
+  console.log("userToUpdate", userID);
+  const newUserID = req.body.register;
+
+  users[userID] = newUserID;
+  console.log("users", users);
+  res.cookie('newUserID', newUserID);
+  res.redirect("/urls");
+})
+
+// const idToUpdate = req.params.id;
+// console.log("idToUpdate", idToUpdate);
+// const newLongURL = req.body.longURL;
+
+// urlDatabase[idToUpdate] = newLongURL;
+// console.log("urlDatabase", urlDatabase);
+// res.redirect("/urls");
 
 
 

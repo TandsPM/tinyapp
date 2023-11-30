@@ -128,7 +128,7 @@ app.post("/urls/:id/delete", (req, res) => {
 
 // // /login form
 app.get('/login', (req, res) => {
-  const cookies = req.cookies.username;
+  const username = req.cookies.username;
 
    if(username) {
      res.redirect('/urls');
@@ -165,10 +165,10 @@ app.post('/login', (req, res) => {
 });
 
 // // sign out
-// app.post('/logout', (req, res) => {
-//   res.clearCookies('idOfUser');
-//   res.redirect('/login');
-// });
+app.post('/logout', (req, res) => {
+  res.clearCookie('username');
+  res.redirect('/login');
+});
 
 
 

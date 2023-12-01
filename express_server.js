@@ -166,15 +166,6 @@ app.post('/login', (req, res) => {
 
 // // Register
 app.get('/register', (req, res) => {
-  const email = req.body.email;
-  if (!req.body.email || !req.body.password) {
-    const templateVars = {
-      user: users[null],
-      error: "Username of Password not filled. Please put in the correct information.",
-    }
-    res.status(401).send('<p>Username of Password not filled. Please put in the correct information.</p>');
-  }
-
   const user_id = req.cookies['user_id'];
   const user = users[user_id];
   const templateVars = {
@@ -186,6 +177,20 @@ app.get('/register', (req, res) => {
 
 app.post('/register', (req, res) => {
   const { email, password } = req.body;
+  // is email empty?
+   if (!email || !password) {
+    res.status(400).send('<p>Username or Password not filled. Please provide the correct information.</p>');
+    return;
+  }
+
+  // is email already registered?
+  for (const userId in users) {
+    if (users[userId].email === email) {
+      res.status(400). send('<p>Email has already been registered. Please use a different email.</p>');
+      return;
+    }
+  }
+  
   const id = generateRandomString(6);
   users[id] = {
     id,
@@ -196,7 +201,6 @@ app.post('/register', (req, res) => {
 
   console.log(users[id]);
   res.redirect('/urls');
-
 });
 
 // // sign out

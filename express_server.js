@@ -29,6 +29,7 @@ const urlDatabase = {
   // "b2xVn2": "http://www.lighthouselabs.ca",
   // "9sm5xK": "http://www.google.com"
 };
+// const id = Math.random().toString(36).substring(2, 5);
 
 const users = {
   uniqueId1: {
@@ -42,6 +43,7 @@ const users = {
     password: 'password22'
   }
 };
+
 
 const urlsForUser = function(id) {
   const userURLs = {};
@@ -233,10 +235,11 @@ app.post('/register', (req, res) => {
   }
   
   const id = generateRandomString(6);
+  const hanshedPassword = bcrypt.hashSync(password, 10);
   users[id] = {
     id,
     email,
-    password,
+    password: hashedPassword,
   };
   res.cookie('user_id', id);
 
@@ -246,6 +249,11 @@ app.post('/register', (req, res) => {
 
 // // LOGOUT
 app.post('/logout', (req, res) => {
+  const { email, password } = req.body;
+
+  if (!bcrypt.compareSync(password, user.password)) {
+    res.status(403).send('<p>Incorrect password. Please correct email or password.</p>')
+  }
   res.clearCookie('email');
   res.redirect('/login');
 });

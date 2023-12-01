@@ -18,21 +18,21 @@
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
       </div>
 
-    <% if (user) { %>
-      <p class="navbar-text">Welcome, <%= user.email %>!</p>
-       <!-- logout -->
-      <form method="POST" class="form-inline m1 auto" action="/logout">
-        <button type="submit" class="btn btn-light">Logout</button>
-      </form>
-    <% } else { %>
-      <!-- Login -->
-      <form method="POST" class="form-inline m1-auto" action="/login">
-        <div class="form-group">
-        <input type="text" class="form-control" name="email" placeholder="Email" required>
-        </div>
-        <button type="submit" class="btn btn-light">Login</button>
-      </form>
-      <% } %>
+      <% if (username) { %>
+        <p class="navbar-text">Welcome, <%= username %>!</p>
+         <!-- logout -->
+        <form method="POST" class="form-inline m1 auto" action="/logout">
+          <button type="submit" class="btn btn-light">Logout</button>
+        </form>
+      <% } else { %>
+        <!-- Login -->
+        <form method="POST" class="form-inline m1-auto" action="/login">
+          <div class="form-group">
+          <input type="text" class="form-control" name="username" placeholder="Username" required>
+          </div>
+          <button type="submit" class="btn btn-light">Login</button>
+        </form>
+        <% } %>
     </div>
   </nav>
 </header>

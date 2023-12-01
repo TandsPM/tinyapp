@@ -67,7 +67,12 @@ app.get("/urls", (req, res) => {
 
 
 app.get("/urls/new", (req, res) => {
-  res.render("urls_new");
+  const user_id = req.cookies.user_id;
+  const user = user_id ? users[user_id] : null;
+  const templateVars = {
+    user: user,
+  };
+  res.render("urls_new", templateVars);
 });
 
 app.get("/u/:id", (req, res) => {
@@ -100,9 +105,9 @@ app.post("/urls/:id/delete", (req, res) => {
 
 // // /login form
 app.get('/login', (req, res) => {
-  const email = req.cookies.email;
+  const user_id = req.cookies.email;
 
-   if(email) {
+   if(user_id) {
      res.redirect('/urls');
    } else {
     res.render('login');
@@ -141,25 +146,6 @@ app.post('/login', (req, res) => {
     res.redirect('/urls');
 });
 
-
-//   // is email already registered?
-//   for (const userId in users) {
-//     if (users[userId].email === email) {
-//       res.status(400). send('<p>Email has already been registered. Please use a different email.</p>');
-//       return;
-//     }
-//   }
-  
-//   const id = generateRandomString(6);
-//   users[id] = {
-//     id,
-//     email,
-//     password,
-//   };
-//   res.cookie('user_id', id);
-
-//   console.log(users[id]);
-//   res.redirect('/urls');
 
 // // Register
 app.get('/register', (req, res) => {

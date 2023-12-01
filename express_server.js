@@ -47,10 +47,6 @@ app.get("/hello", (req, res) => {
 });
 
 app.get('/urls', (req, res) => {
-  // take user_id from cookies to update for register
-  //const user_id = req.cookies ? req.cookies.user_id : null;
-  // grab user info from user_id
-  //const user = user_id ? users[user_id] : null;
   const templateVars = {
     email: req.cookies ? req.cookies.user_id : null,
     urls: urlDatabase
@@ -79,9 +75,14 @@ app.get("/u/:id", (req, res) => {
   const id = req.params.id;
   const longURL = urlDatabase[id];
 
+  console.log("urlDatabase:", urlDatabase);
+
+  // if shortURL does not exist, show error
   if (!longURL) {
-    res.status(403).send('<p>URL is not found. Please check the provided URL.</p>')
+    res.status(404).send('<p>URL is not found. Please check the provided URL.</p>')
+    return;
   }
+
   res.redirect(longURL);
 });
 

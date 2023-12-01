@@ -48,11 +48,11 @@ app.get("/hello", (req, res) => {
 
 app.get('/urls', (req, res) => {
   // take user_id from cookies to update for register
-  const user_id = req.cookies ? req.cookies.user_id : null;
+  //const user_id = req.cookies ? req.cookies.user_id : null;
   // grab user info from user_id
-  const user = user_id ? users[user_id] : null;
+  //const user = user_id ? users[user_id] : null;
   const templateVars = {
-    user: user,
+    email: req.cookies ? req.cookies.user_id : null,
     urls: urlDatabase
   };
   res.render('urls_index', templateVars);
@@ -96,34 +96,6 @@ app.post("/urls/:id/delete", (req, res) => {
   console.log("urlDatabase", urlDatabase);
   res.redirect("/urls");
 });
-
-
-// // read/output cookie data
-// app.get('/read-cookies', (req, res) => {
-//   const cookies = req.cookies;
-//   const templateVars = {
-//     value: cookies
-//   };
-
-//   // console.log('cookies:', cookies);
-//   res.render('read-cookies', templateVars);
-// });
-
-// // set cookies
-// app.get('/set-cookies', (req, res) => {
-//   res.cookie('setCookie', '🍪🍪🍪');
-
-//   res.redirect('/read-cookies');
-// });
-
-// // delete cookies
-// app.get('/delete-cookies', (req, res) => {
-//   for(const key in req.cookies) {
-//     res.clearCookie(key);
-//   }
-
-//   res.redirect('/read-cookies');
-// });
 
 
 // // /login form

@@ -47,7 +47,9 @@ app.get("/hello", (req, res) => {
 });
 
 app.get('/urls', (req, res) => {
+  // take user_id from cookies to update for register
   const user_id = req.cookies ? req.cookies.user_id : null;
+  // grab user info from user_id
   const user = user_id ? users[user_id] : null;
   const templateVars = {
     user: user,
@@ -164,6 +166,15 @@ app.post('/login', (req, res) => {
 
 // // Register
 app.get('/register', (req, res) => {
+  const email = req.body.email;
+  if (!req.body.email || !req.body.password) {
+    const templateVars = {
+      user: users[null],
+      error: "Username of Password not filled. Please put in the correct information.",
+    }
+    res.status(401).send('<p>Username of Password not filled. Please put in the correct information.</p>');
+  }
+
   const user_id = req.cookies['user_id'];
   const user = users[user_id];
   const templateVars = {

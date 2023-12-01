@@ -35,12 +35,12 @@ const users = {
   uniqueId1: {
     user_id: 'uniqueId1',
     email: 'user@example.com',
-    password: 'password1'
+    password: bcrypt.hashSync('password1', 10),
   },
   uniqueId2: {
     user_id: 'uniqueId2',
     email: 'user2@example.com',
-    password: 'password22'
+    password: bcrypt.hashSync('password22', 10),
   }
 };
 

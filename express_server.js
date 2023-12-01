@@ -17,12 +17,12 @@ const urlDatabase = {
 
 const users = {
   uniqueId1: {
-    id: 'uniqueId1',
+    user_id: 'uniqueId1',
     email: 'user@example.com',
     password: 'password1'
   },
   uniqueId2: {
-    id: 'uniqueId2',
+    user_id: 'uniqueId2',
     email: 'user2@example.com',
     password: 'password22'
   }
@@ -100,9 +100,9 @@ app.post("/urls/:id/delete", (req, res) => {
 
 // // /login form
 app.get('/login', (req, res) => {
-  const username = req.cookies.username;
+  const email = req.cookies.email;
 
-   if(username) {
+   if(email) {
      res.redirect('/urls');
    } else {
     res.render('login');
@@ -111,30 +111,55 @@ app.get('/login', (req, res) => {
 
 // // POST /login - set cookie to show who we are - redirect to protected page
 app.post('/login', (req, res) => {
-  const body = req.body;
-
-  const username = body.username;
-  const password = body.password;
-
+  const { email, password } = req.body;
+  // is email or pass empty?
+   if (!email || !password) {
+    res.status(403).send('<p>Email and password required. Please provide the correct information.</p>');
+    return;
+  }
+  // fins the user by email
   let user = null;
-
   for(const id in users) {
     const dataUser = users[id];
 
-    if(username === dataUser.username) {
-      if(password === dataUser.password) {
-        user = dataUser;
-      }
+    if(users[id].email === email) {
+        user = users[id];
+        break;
     }
   }
-
-  if (user) {
-    res.cookie('username', username);
-    res.redirect('/urls');
-  } else {
-    res.status(401).send('<p>Incorrect user or password</p>');
+  // No users found
+  if (!user) {
+    res.status(403).send('<p>Email cannot be found. Please register for an account</p>');
+    return;
   }
+  // does password match
+  if (password !== user.password) {
+    res.status(403).send('<p>Password does not match with email.  Please enter correct email or password.</p>')
+  }
+
+    res.cookie('user_id', user.id);
+    res.redirect('/urls');
 });
+
+
+//   // is email already registered?
+//   for (const userId in users) {
+//     if (users[userId].email === email) {
+//       res.status(400). send('<p>Email has already been registered. Please use a different email.</p>');
+//       return;
+//     }
+//   }
+  
+//   const id = generateRandomString(6);
+//   users[id] = {
+//     id,
+//     email,
+//     password,
+//   };
+//   res.cookie('user_id', id);
+
+//   console.log(users[id]);
+//   res.redirect('/urls');
 
 // // Register
 app.get('/register', (req, res) => {
@@ -151,7 +176,7 @@ app.post('/register', (req, res) => {
   const { email, password } = req.body;
   // is email empty?
    if (!email || !password) {
-    res.status(400).send('<p>Username or Password not filled. Please provide the correct information.</p>');
+    res.status(400).send('<p>email or Password not filled. Please provide the correct information.</p>');
     return;
   }
 
@@ -177,7 +202,7 @@ app.post('/register', (req, res) => {
 
 // // sign out
 app.post('/logout', (req, res) => {
-  res.clearCookie('username');
+  res.clearCookie('email');
   res.redirect('/login');
 });
 

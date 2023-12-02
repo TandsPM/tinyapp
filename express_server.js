@@ -104,17 +104,9 @@ app.get("/", (req, res) => {
 
 // Display user's URLs
 app.get('/urls', (req, res) => {
-  const user_id = req.session.user_id;
-  if (!user_id || !users[user_id]) {
-    res.status(401).send('<p>Please log in or register to access URL</p>');
-    return;
-  }
-
-  const user = users[user_id];
-  const userURLs = urlsForUser(user_id);
   const templateVars = {
-    user: user,
-    urls: userURLs
+    user: users[req.session.user_id],
+    urls: urlsForUser(req.session.user_id, urlDatabase)
   };
   res.render('urls_index', templateVars);
 });

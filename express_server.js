@@ -111,6 +111,18 @@ app.get('/urls', (req, res) => {
   res.render('urls_index', templateVars);
 });
 
+// Create new URL
+app.post("/urls", (req, res) => {
+  const longURL = req.body.longURL;
+  const shortURL = generateRandomString();
+  const user_id = req.session.user_id;
+  urlDatabase[shortURL] = {
+    longURL: longURL,
+    userID: user_id,
+  };
+  res.redirect(`/urls/${shortURL}`);
+});
+
 // form to create new URL
 app.get("/urls/new", (req, res) => {
   const user_id = req.session.user_id;
@@ -298,19 +310,6 @@ app.get("/urls/:id", (req, res) => {
   const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id].longURL , user: users[req.session.user_id]};
   res.render("urls_show", templateVars);
 });
-
-// Create new URL
-app.post("/urls", (req, res) => {
-  const longURL = req.body.longURL;
-  const shortURL = generateRandomString();
-  const user_id = req.session.user_id;
-  urlDatabase[shortURL] = {
-    longURL: longURL,
-    userID: user_id,
-  };
-  res.redirect(`/urls/${shortURL}`);
-});
-
 
 
 // start the server

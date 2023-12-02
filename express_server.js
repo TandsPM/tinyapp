@@ -85,9 +85,13 @@ function generateRandomString() {
 ////////////////////////////////////////////////////////////////////////////////
 
 // Root route
-// app.get("/", (rep, res) => {
-//   res.send("Hello!");
-// });
+app.get("/", (req, res) => {
+  if (req.session.user_id) {
+    res.redirect("/urls");
+  } else {
+    res.redirect("/login");
+  }
+});
 
 // // Display URLs in JSON format
 // app.get("/urls.json", (req, res) => {
@@ -196,28 +200,31 @@ app.get('/login', (req, res) => {
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
 
-  let user = Object.values(users).find(user => user.email === email);
+  console.log("Login Attempt:", email, password);
 
+    // is email or pass empty?
+    if (!email || !password) {
+      res.status(403).send('<p>Email and password required. Please provide the correct information.</p>');
+      return;
+    }
+
+  // find user by email
+  let user = Object.values(users).find(user => user.email === email);
+  
   if (!user || !bcrypt.compareSync(password, user.password)) {
     res.status(403).send('<p>Email cannot be found. Please register for an account</p>');
     return;
   }
-  
-  // is email or pass empty?
-   if (!email || !password) {
-    res.status(403).send('<p>Email and password required. Please provide the correct information.</p>');
-    return;
-  }
   // finds the user by email
-  user = null;
-  for(const id in users) {
-    //const dataUser = users[id];
+  // user = null;
+  // for(const id in users) {
+  //   //const dataUser = users[id];
 
-    if(users[id].email === email) {
-        user = users[id];
-        break;
-    }
-  }
+  //   if(users[id].email === email) {
+  //       user = users[id];
+  //       break;
+  //   }
+  // }
 
     req.session.user_id = user.user_id;
     res.redirect('/urls');
@@ -267,11 +274,15 @@ app.post('/register', (req, res) => {
   // generate the hash
   const salt = bcrypt.genSaltSync(10);
   const hash = bcrypt.hashSync(password, salt);
+  
+console.log('Registration:', email, hash);
+
   users[id] = {
     id,
     email,
     password: hash,
   };
+  
   req.session.user_id = id
   res.redirect('/urls');
 });

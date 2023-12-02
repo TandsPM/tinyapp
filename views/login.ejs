@@ -10,15 +10,19 @@
 </head>
 <body>
   <%- include('partials/_header') %>
+
+  <% if (typeof errorMessage !== 'undefined') { %>
+  <p class="error"><%= errorMessage %></p>
+  <% } %>
     <h1>Login</h1>
     <form method="POST" action="/login">
       <label>
         Email:
-        <input type="text" name="email">
+        <input type="text" name="email" placeholder="Email">
       </label>
       <label>
         Password:
-        <input type="password" name="password">
+        <input type="password" name="password" placeholder="Password">
       </label>
       <button type="submit">Login</button>
 </body>

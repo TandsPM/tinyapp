@@ -1,13 +1,13 @@
-const urlsForUser = function(id) {
-  const userURLs = {};
+// const urlsForUser = function(id) {
+//   const userURLs = {};
 
-  for (const shortURL in urlDatabase) {
-    if (urlDatabase[shortURL].userID === id) {
-      userURLs[shortURL] = urlDatabase[shortURL];
-    }
-  }
-  return userURLs;
-};
+//   for (const shortURL in urlDatabase) {
+//     if (urlDatabase[shortURL].userID === id) {
+//       userURLs[shortURL] = urlDatabase[shortURL];
+//     }
+//   }
+//   return userURLs;
+// };
 
 // Help generate strings
 function generateRandomString() {
@@ -22,15 +22,15 @@ function generateRandomString() {
 }
 
 const getUserByEmail = function(email, database) {
-  for (let user in database)
- {
-  if (database[user]['email'] === email) {
-    return database[user].id;
+  for (let userId in database) {
+    if (database[userId].email === email) {
+      return database[userId];
+    }
   }
- }
+  return undefined;
 };
 
-const findUser = function(req, value, database = users) {
+const findUser = function(req, value, database) {
   for (let user in database) {
     if (database[user][value] === req.body[value]) {
       return database[user];
@@ -39,4 +39,6 @@ const findUser = function(req, value, database = users) {
   return undefined;
 };
 
-module.exports = helpers;
+
+
+module.exports = { generateRandomString, getUserByEmail, findUser };

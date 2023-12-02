@@ -1,11 +1,13 @@
-const { helper } = require('../tinyapp');
-
-// Importing required modules
 const express = require("express");
 //const cookieParser = require("cookie-parser");
 const morgan = require('morgan');
 const cookieSession = require('cookie-session');
 const bcrypt = require('bcryptjs');
+
+const { 
+  generateRandomString, 
+  getUserByEmail,
+} = require('./helpers');
 
 // Creating Express app
 const app = express();
@@ -13,11 +15,7 @@ const PORT = 8080; // default 8080
 //const salt = bcrypt.genSaltSync(10);
 app.set("view engine", "ejs");
 
-/*
-[] Change everything referencing cookies to session 
-[] Go through route and fix passing in an email and just pass in the user
 
-*/
 ////////////////////////////////////////////////////////////////////////////////
 // Middleware setup
 ////////////////////////////////////////////////////////////////////////////////
@@ -99,6 +97,17 @@ const users = {
 //   }
 //   return undefined;
 // };
+
+const urlsForUser = function(id) {
+  const userURLs = {};
+
+  for (const shortURL in urlDatabase) {
+    if (urlDatabase[shortURL].userID === id) {
+      userURLs[shortURL] = urlDatabase[shortURL];
+    }
+  }
+  return userURLs;
+};
 
 ////////////////////////////////////////////////////////////////////////////////
 // Routes
@@ -237,22 +246,19 @@ app.get('/login', (req, res) => {
 // // POST /login - process login
 app.post('/login', (req, res) => {
   const { email, password } = req.body;
-  const currentUser = findUser(req, 'email');
+  const currentUser = getUserByEmail(email, users);
 
-  if (!getUserByEmail(email, users)) {
+  if (!currentUser) {
     res.render('login', { errorMessage: 'Account not found.', user: null });
     return;
   }
 
-  if (!bcrypt.compareSync(password, currentUser.password)) {
+  if (bcrypt.compareSync(password, currentUser.password)) {
     req.session.user_id = currentUser.user_id;
     res.redirect('/urls');
   } else {
     res.render('login', { errorMessage: 'Invalid Password, please put in the correct password.', user: null });
   }
-
-  // req.session.user_id = currentUser.user_id;
-  // res.redirect('/urls');
 });
 
 

@@ -27,5 +27,4 @@ const findUser = function(req, value, database) {
   return undefined;
 };
 
-
 module.exports = { generateRandomString, getUserByEmail, findUser };

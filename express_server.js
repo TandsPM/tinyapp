@@ -237,7 +237,7 @@ app.post('/register', (req, res) => {
       res.status(400).send('<p>Email has already been registered. Please use a different email.</p>');
       return;
     }
-  }
+  };
   // email is unique, create new user object
   const id = Math.random().toString(36).substring(2, 5);;
   // generate the hash
@@ -271,17 +271,17 @@ app.get("/urls/:id", (req, res) => {
   if (!urlAccess) {
     res.status(404).send('<p>URL not found.</p>');
     return;
-  }
+  };
 
   if (!user_id) {
     res.status(401).send('<p>Please log in to access this page.</p>');
     return;
-  }
+  };
 
   if (urlAccess.userID !== user_id) {
     res.status(403).send('<p>You do not have permission to access this.</p>');
     return;
-  }
+  };
 
   const templateVars = {
     id: req.params.id,

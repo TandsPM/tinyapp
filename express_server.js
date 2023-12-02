@@ -198,9 +198,10 @@ app.post('/login', (req, res) => {
     res.status(403).send('<p>Email cannot be found. Please register for an account</p>');
     return;
   }
-  // does password match
-  if (password !== user.password) {
+  // does password match - compare hashed pass using bcrypt
+  if (!bcrypt.compareSync(password, user.password)) {
     res.status(403).send('<p>Password does not match with email.  Please enter correct email or password.</p>')
+    return;
   }
 
     res.cookie('user_id', user.id);

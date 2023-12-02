@@ -1,15 +1,3 @@
-// const urlsForUser = function(id) {
-//   const userURLs = {};
-
-//   for (const shortURL in urlDatabase) {
-//     if (urlDatabase[shortURL].userID === id) {
-//       userURLs[shortURL] = urlDatabase[shortURL];
-//     }
-//   }
-//   return userURLs;
-// };
-
-// Help generate strings
 function generateRandomString() {
   const alphabet = 'abcdefghijklmnopqrstuvwxyz';
   let randomString = '';
@@ -38,7 +26,6 @@ const findUser = function(req, value, database) {
   }
   return undefined;
 };
-
 
 
 module.exports = { generateRandomString, getUserByEmail, findUser };

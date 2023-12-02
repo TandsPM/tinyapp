@@ -188,7 +188,7 @@ app.get('/login', (req, res) => {
    if(user_id) {
      res.redirect('/urls');
    } else {
-    res.render('login');
+    res.render('login', { user: user_id });
    }
 });
 

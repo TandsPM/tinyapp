@@ -2,10 +2,12 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const morgan = require('morgan');
+const bcrypt = require('bcryptjs');
 
 // Creating Express app
 const app = express();
 const PORT = 8080; // default 8080
+const salt = bcrypt.genSaltSync(10);
 app.set("view engine", "ejs");
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -29,18 +31,17 @@ const urlDatabase = {
   // "b2xVn2": "http://www.lighthouselabs.ca",
   // "9sm5xK": "http://www.google.com"
 };
-// const id = Math.random().toString(36).substring(2, 5);
 
 const users = {
   uniqueId1: {
     user_id: 'uniqueId1',
     email: 'user@example.com',
-    password: bcrypt.hashSync('password1', 10),
+    password: 'password1'
   },
   uniqueId2: {
     user_id: 'uniqueId2',
     email: 'user2@example.com',
-    password: bcrypt.hashSync('password22', 10),
+    password: 'password22'
   }
 };
 
@@ -77,17 +78,18 @@ app.get("/hello", (req, res) => {
 // Display user's URLs
 app.get('/urls', (req, res) => {
   const user_id = req.cookies.user_id;
-  if (!user_id) {
+  if (!user_id || !users[user_id]) {
     res.status(401).send('<p>Please log in or register to access URL</p>');
     return;
   }
 
+  const user = users[user_id];
+  const email = user && user.email ? user.email : null;
   const userURLs = urlsForUser(user_id);
   const templateVars = {
-    user: users[user_id],
+    user: user,
+    email: email,
     urls: userURLs
-    // email: req.cookies ? req.cookies.user_id : null,
-    // urls: urlDatabase
   };
   res.render('urls_index', templateVars);
 });
@@ -211,6 +213,7 @@ app.get('/register', (req, res) => {
   const user_id = req.cookies['user_id'];
   const user = users[user_id];
   const templateVars = {
+    email: user ? user.email : null,
     user
   };
 
@@ -233,17 +236,19 @@ app.post('/register', (req, res) => {
       return;
     }
   }
-  
-  const id = generateRandomString(6);
-  const hanshedPassword = bcrypt.hashSync(password, 10);
+  // email is unique, create new user object
+  const id = Math.random().toString(36).substring(2, 5);;
+  // generate the hash
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(password, salt);
   users[id] = {
     id,
     email,
-    password: hashedPassword,
+    password: hash,
   };
   res.cookie('user_id', id);
 
-  console.log(users[id]);
+  console.log(users);
   res.redirect('/urls');
 });
 

@@ -6,7 +6,8 @@
   <title>Document</title>
 </head>
 <body>
-  <%- include('partials/_header') %>
+  <%= console.log(email) %>
+  <%- include('partials/_header', { email: email }) %>
   <form method="POST" class="form-inline m1-auto" action="/register">
     <div class="form-group">
     <input type="email" class="form-control" name="email" placeholder="Email" required>

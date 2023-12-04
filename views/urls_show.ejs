@@ -20,13 +20,22 @@
             <%= id %>
           </a>
         </p>
-        <form method="POST" action="/urls/<%= id %>">
+        <!-- editing the URL -->
+        <form method="POST" action="/urls/<%= id %>/edit">
+          <div class="form-group">
+            <label for="longURL">New Long URL:</label>
+            <input type="text" class="form-control" id="longURL" name="longURL" value="<%= longURL %>">
+          </div>
+          <button type="submit" class="btn btn-primary">Upadte URL</button>
+        </form>
+
+        <!-- <form method="POST" action="/urls/<%= id %>">
           <div class="form-group">
             <label for="longURL">New Long URL:</label>
             <input type="text" class="form-control" id="longURL" value="<%= longURL %>">
             <a href="/u/<%= id %>" class="btn btn-danger">Submit</a>
           </div>
-        </form>
+        </form> -->
 
         <form method="POST" action="/urls/<%= id %>/delete">
           <button type="submit" class="btn btn-danger">Delete</button>

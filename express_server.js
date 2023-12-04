@@ -33,11 +33,11 @@ app.use(cookieSession({
 const urlDatabase = {
   b6UTcQ: {
     longURL: "https://www.tsn.ca",
-    userID: "aj48lW",
+    userID: "aj48lw",
   },
   i3BoGr: {
     longURL: "https://www.google.ca",
-    userID: "aJ48lW",
+    userID: "aJ48lw",
   },
 };
 
@@ -59,7 +59,7 @@ const urlsForUser = function(id) {
 
   for (const shortURL in urlDatabase) {
     if (urlDatabase[shortURL].userID === id) {
-      userURLs[shortURL] = urlDatabase[shortURL];
+      userURLs[shortURL] = urlDatabase[shortURL].longURL;
     }
   }
   return userURLs;
@@ -148,6 +148,10 @@ app.post("/urls/:id/edit", (req, res) => {
   const idToUpdate = req.params.id;
   const userURLs = urlsForUser(user_id);
 
+  console.log('user_id:', user_id);
+  console.log('idToUpdate:', idToUpdate);
+  console.log('userURLs:', userURLs);
+
   if (!userURLs[idToUpdate]) {
     res.status(403).send('<p>You do not have permission to edit.</p>');
     return;
@@ -155,7 +159,7 @@ app.post("/urls/:id/edit", (req, res) => {
 
   const newLongURL = req.body.longURL;
   urlDatabase[idToUpdate].longURL = newLongURL;
-  res.redirect("/urls");
+  res.redirect(`/urls/${idToUpdate}`);
 });
 
 // // POST DELETE URL

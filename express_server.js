@@ -142,14 +142,14 @@ app.post("/urls/:id/edit", (req, res) => {
   const user_id = req.session.user_id;
   const idToUpdate = req.params.id;
 
-  if (!urlDatabase[user_id].userID) return res.status(401).send('<p>Please log in to edit any URLs.</p>');
+  if (!urlDatabase) return res.status(401).send('<p>Please log in to edit any URLs.</p>');
 
   if (!urlDatabase[idToUpdate]) return res.status(403).send('<p>You do not have permission to edit.</p>');
 
 
   const newLongURL = req.body.longURL;
   urlDatabase[idToUpdate].longURL = newLongURL;
-  
+
   res.redirect(`/urls/${idToUpdate}`);
 });
 

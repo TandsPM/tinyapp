@@ -1,5 +1,5 @@
 function generateRandomString() {
-  const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+  const alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789';
   let randomString = '';
 
   for (let i = 0; i < 6; i++) {

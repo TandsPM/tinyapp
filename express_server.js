@@ -140,25 +140,16 @@ app.get("/u/:id", (req, res) => {
 // // POST EDIT URL
 app.post("/urls/:id/edit", (req, res) => {
   const user_id = req.session.user_id;
-  if (!user_id) {
-    res.status(401).send('<p>Please log in to edit any URLs.</p>');
-    return;
-  }
-
   const idToUpdate = req.params.id;
-  const userURLs = urlsForUser(user_id);
 
-  console.log('user_id:', user_id);
-  console.log('idToUpdate:', idToUpdate);
-  console.log('userURLs:', userURLs);
+  if (!urlDatabase[user_id].userID) return res.status(401).send('<p>Please log in to edit any URLs.</p>');
 
-  if (!userURLs[idToUpdate]) {
-    res.status(403).send('<p>You do not have permission to edit.</p>');
-    return;
-  }
+  if (!urlDatabase[idToUpdate]) return res.status(403).send('<p>You do not have permission to edit.</p>');
+
 
   const newLongURL = req.body.longURL;
   urlDatabase[idToUpdate].longURL = newLongURL;
+  
   res.redirect(`/urls/${idToUpdate}`);
 });
 
@@ -236,27 +227,32 @@ app.post('/register', (req, res) => {
   }
 
   // is email already registered?
-  for (const userId in users) {
-    if (users[userId].email === email) {
-      res.status(400).send('<p>Email has already been registered. Please use a different email.</p>');
-      return;
-    }
-  };
+  if(getUserByEmail(email, users)) {
+    res.status(400).send('<p>Email has already been registered. Please use a different email.</p>');
+    return;
+  }
+  // for (const userId in users) {
+  //   if (users[userId].email === email) {
+  //     res.status(400).send('<p>Email has already been registered. Please use a different email.</p>');
+  //     return;
+  //   }
+  // };
   // email is unique, create new user object
-  const id = Math.random().toString(36).substring(2, 5);;
+  // const id = Math.random().toString(36).substring(2, 5);
   // generate the hash
   const salt = bcrypt.genSaltSync(10);
   const hash = bcrypt.hashSync(password, salt);
 
   console.log('Registration:', email, hash);
 
-  users[id] = {
-    user_id: id,
+  const user_id = email;
+  users[user_id] = {
+    user_id,
     email,
     password: hash,
   };
 
-  req.session.user_id = id;
+  req.session.user_id = user_id;
   res.redirect('/urls');
 });
 
